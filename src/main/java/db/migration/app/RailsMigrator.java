@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class RailsMigrator {
    private static final int BUFFER_SIZE = 4096;
 
-    public static void migrate(String config,String scriptDir) throws IOException {
+    public static String migrate(String config,String scriptDir) throws IOException {
         // 装载database-migrator ruby文件
         String script = FileCopyUtils.copyToString(
                 new InputStreamReader(RailsMigrator.class.getResourceAsStream("/database-migration.rb"),
@@ -27,14 +27,13 @@ public class RailsMigrator {
         IRubyObject rubyObject = ruby.evalScriptlet(script);
 
         // 调用ruby里面的方法.
-        JavaEmbedUtils.invokeMethod(ruby, rubyObject, "migrate2",
-                new Object []{config,scriptDir},
-        Object.class);
+       return JavaEmbedUtils.invokeMethod(ruby, rubyObject, "migrate2",
+                new Object []{config,scriptDir},Object.class).toString();
     }
     private static Ruby createRubyEnv(){
         //构造ruby运行环境
-        Ruby ruby = JavaEmbedUtils.initialize(
-                Arrays.asList(".", "META-INF/jruby.home/lib/ruby/site_ruby/1.8"));
+        Ruby ruby = JavaEmbedUtils.initialize(Arrays.asList());
+                //Arrays.asList(".", "META-INF/jruby.home/lib/ruby/site_ruby/1.8"));
         //ruby.evalScriptlet("ENV['GEM_PATH'] = '"+gemPath+"'");
         ruby.setKCode(KCode.UTF8);
         return ruby;

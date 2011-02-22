@@ -26,6 +26,7 @@ class DBMigrator
         #do migration
         ActiveRecord::Base.logger.info("migration dir:#{migrate_dir}")
         ActiveRecord::Migrator.migrate(migrate_dir, ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+        ActiveRecord::Base.logger.info("current version: #{ActiveRecord::Migrator.current_version}")
     end
     def migrate2 config,migrate_dir
         ActiveRecord::Base.logger=Logger.new($stdout)
@@ -33,6 +34,7 @@ class DBMigrator
         ActiveRecord::Base.establish_connection(dbconfig)    
         ActiveRecord::Base.logger.info("migration dir:#{migrate_dir}")
         ActiveRecord::Migrator.migrate(migrate_dir, ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
+        return ActiveRecord::Migrator.current_version
     end
 end
 DBMigrator.new

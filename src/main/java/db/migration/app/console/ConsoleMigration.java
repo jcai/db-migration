@@ -26,7 +26,7 @@ public class ConsoleMigration {
         upgradeByArgs(args);
     }
 
-    public static int upgradeByArgs(final String[] args)
+    public static String upgradeByArgs(final String[] args)
             throws ParseException, MalformedURLException {
         Options options = new Options();
         options.addOption("d", "db_script_dir", true, "数据库脚本的路径");
@@ -41,19 +41,19 @@ public class ConsoleMigration {
                     .println("数据库升级脚本工具(database migration tools) \n    version: "
                             + getVersion()
                             + "\n    author:Jun Tsai");
-            return -1;
+            return "-3";
         }
         if (cmd.hasOption("h") || !cmd.hasOption("d") || !cmd.hasOption("c")
                 ) {
             printUsage(options);
-            return -1;
+            return "-3";
         }
         final String dbUpgradePath = cmd.getOptionValue("d");
         if (!new File(dbUpgradePath).exists()
                 || !new File(dbUpgradePath).isDirectory()) {
             System.out.println("数据库脚本路径不存在,或者不是文件目录,目录：" + dbUpgradePath);
             printUsage(options);
-            return -1;
+            return "-3";
         }
 
         final String hbPath = cmd.getOptionValue("c");
@@ -61,7 +61,7 @@ public class ConsoleMigration {
         if (!new File(hbPath).exists() || !new File(hbPath).isFile()) {
             System.out.println("配置文件不存在或者不是文件,path:" + hbPath);
             printUsage(options);
-            return -1;
+            return "-3";
         }
 
         /*
@@ -94,8 +94,7 @@ public class ConsoleMigration {
             //Thread.currentThread().setContextClassLoader(classLoader);
             //return DatabaseMigrationMain.doUpgrade(new String[] {hbPath,dbUpgradePath});
             //TODO
-            RailsMigrator.migrate(hbPath,dbUpgradePath);
-            return 121;
+            return RailsMigrator.migrate(hbPath,dbUpgradePath);
         } // forward the args
         catch (Exception e) {
             throw new RuntimeException(e);

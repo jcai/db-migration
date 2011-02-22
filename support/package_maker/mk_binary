@@ -25,7 +25,7 @@ var_dir=$dist_dir/var
 mkdir -p $var_dir
 
 #copy jar filie
-cp $p/../../target/db-migration-full.jar $lib_dir/
+#cp $p/../../target/db-migration-full.jar $lib_dir/
 
 #package linux executor
 cp -r $p/linux/bin/* ${binary_path}/

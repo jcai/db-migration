@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.StringWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -241,23 +242,21 @@ public class DatabaseMigrationUI extends JPanel implements ActionListener {
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
                         try {
-                            int version = ConsoleMigration
+                            String version = ConsoleMigration
                                     .upgradeByArgs(new String[]{"-c",
                                             configPath, "-d", dbScriptDir});
                             
                             DatabaseMigrationUI.this.showResult(version);
                             System.setOut(System.out);
-                        } catch (Exception e) {
-                            DatabaseMigrationUI.this.showResult(-1);
-                            throw new RuntimeException(e);
+                        } catch (Throwable e) {
+                            DatabaseMigrationUI.this.showErrorMessage(e);
                         }
                     }
                 });
                 thread.start();
               
             } catch (Exception e1) {
-                this.showResult(-1);
-                e1.printStackTrace();
+                DatabaseMigrationUI.this.showErrorMessage(e1);
             }
         }
     }
@@ -266,19 +265,33 @@ public class DatabaseMigrationUI extends JPanel implements ActionListener {
         return configPath!=null&&configPath.trim().length()>0;
     }
 
-    private void showResult(final int version) {
+    private void showErrorMessage(final Throwable e) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-		        if (version > -1) {
-		            JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
-		                    "成功升级数据库到版本：" + version, "数据库升级脚本",
-		                    JOptionPane.INFORMATION_MESSAGE);
-		        } else if(version ==-2) {
+                StringBuffer sb = new StringBuffer();
+                sb.append(e.toString()).append("\n");
+                StackTraceElement[] sts = e.getStackTrace();
+                for(int i=0;i<sts.length;i++){
+                    sb.append(sts[i].toString()).append("\n");
+                }
+                JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
+                        sb.toString(), "数据库升级脚本", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+    private void showResult(final String version) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+		        if("-2".equalsIgnoreCase(version)) {
 		            JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
 		                    "未能升级，因为文件版本小于或等于数据库版本", "数据库升级脚本", JOptionPane.ERROR_MESSAGE);
-		        } else {
-		            JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
-		                    "升级失败，请查看下方日志", "数据库升级脚本", JOptionPane.ERROR_MESSAGE);
+		        } else if("-3".equalsIgnoreCase(version)){
+                    JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
+                            "升级失败，请查看下方日志", "数据库升级脚本", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
+                            "成功升级数据库至版本["+version+"]", "数据库升级脚本",
+                            JOptionPane.INFORMATION_MESSAGE);
 		        }
 		        upgradeBtn.setEnabled(true);
             }
