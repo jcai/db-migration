@@ -1,0 +1,17 @@
+target
+test-output
+database
+*.log
+.scala_dependencies
+data
+*.iml
+*.ipr
+*.iws
+nbactions.xml
+.settings
+support/ant-lib/*.jar
+support/maven-lib/*.jar
+support/bootstrap/*.jar
+support/bootstrap/*.class
+nb-configuration.xml
+nbactions-development.xml

@@ -1,0 +1,6 @@
+-Dmq.port=9080
+-Dmq.config.dir=../config
+-Dmq.log.dir=../log
+-Xmx1024m
+-XX:PermSize=128m
+

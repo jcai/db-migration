@@ -1,0 +1,24 @@
+<assembly>
+    <id>full</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <excludes>
+                <exclude>junit:junit</exclude>
+            </excludes>
+        </dependencySet>
+    </dependencySets>
+    <!--
+    <files>
+        <file>
+            <source>target/monad-core.jar</source>
+            <outputDirectory>lib</outputDirectory>
+        </file>
+    </files>
+    -->
+</assembly>

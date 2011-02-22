@@ -1,0 +1,52 @@
+#!/bin/bash
+script_path="$0"
+
+p=$(dirname $script_path)
+p=`cd "$p" && pwd`
+cd $p/../..
+#mvn -o -P production clean package assembly:single
+mvn -o clean test
+mvn -o -P production -Dmaven.test.skip=true clean package
+
+#dist dir
+dist_dir=$p/../../target/dist/mq
+mkdir -p $dist_dir
+
+#binary dir
+binary_path=$dist_dir/bin
+mkdir -p $binary_path
+
+#lib_dir
+lib_dir=$dist_dir/lib
+mkdir -p $lib_dir
+
+#var_dir
+var_dir=$dist_dir/var
+mkdir -p $var_dir
+
+#copy jar filie
+cp $p/../../target/zxth-mq.jar $lib_dir/
+
+#package linux executor
+cp -r $p/linux/bin/* ${binary_path}/
+
+#package win executor
+cp -r $p/win/bin/* ${binary_path}/
+cd $p/win
+~/DevTools/exe4j/bin/exe4jc mq.exe4j
+mv mq.exe ${binary_path}/
+cp mq.exe.vmoptions ${binary_path}/
+
+cd $p
+#copy example configruation files
+cp -r ../config $dist_dir/
+#copy doc files
+cp -r ../doc $dist_dir/
+cp  ../doc/changelog.txt $dist_dir/
+cd $dist_dir
+#remove subversion files
+find . -name '.svn'|xargs rm -rf 
+cd ..
+tar cfvz mq-`date +%Y.%m.%d`.tar.gz mq
+cd $p
+
