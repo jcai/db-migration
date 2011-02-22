@@ -32,9 +32,11 @@ public class RailsMigrator {
     }
     private static Ruby createRubyEnv(){
         //构造ruby运行环境
-        Ruby ruby = JavaEmbedUtils.initialize(Arrays.asList());
-                //Arrays.asList(".", "META-INF/jruby.home/lib/ruby/site_ruby/1.8"));
-        //ruby.evalScriptlet("ENV['GEM_PATH'] = '"+gemPath+"'");
+        Ruby ruby = JavaEmbedUtils.initialize(Arrays.asList(
+                ".",
+                "META-INF/jruby.home/lib/ruby/1.8",
+                "META-INF/jruby.home/lib/ruby/site_ruby/1.8"));
+        //ruby.evalScriptlet("ENV['GEM_PATH'] = '.'");
         ruby.setKCode(KCode.UTF8);
         return ruby;
     }
