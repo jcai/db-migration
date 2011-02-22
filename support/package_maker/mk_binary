@@ -5,11 +5,11 @@ p=$(dirname $script_path)
 p=`cd "$p" && pwd`
 cd $p/../..
 #mvn -o -P production clean package assembly:single
-mvn -o clean test
-mvn -o -P production -Dmaven.test.skip=true clean package
+#mvn -o clean test
+mvn -o -P production -Dmaven.test.skip=true clean assembly:assembly
 
 #dist dir
-dist_dir=$p/../../target/dist/mq
+dist_dir=$p/../../target/dist/db-migration
 mkdir -p $dist_dir
 
 #binary dir
@@ -25,7 +25,7 @@ var_dir=$dist_dir/var
 mkdir -p $var_dir
 
 #copy jar filie
-cp $p/../../target/zxth-mq.jar $lib_dir/
+cp $p/../../target/db-migration-full.jar $lib_dir/
 
 #package linux executor
 cp -r $p/linux/bin/* ${binary_path}/
@@ -33,9 +33,9 @@ cp -r $p/linux/bin/* ${binary_path}/
 #package win executor
 cp -r $p/win/bin/* ${binary_path}/
 cd $p/win
-~/DevTools/exe4j/bin/exe4jc mq.exe4j
-mv mq.exe ${binary_path}/
-cp mq.exe.vmoptions ${binary_path}/
+~/DevTools/exe4j/bin/exe4jc db-migration.exe4j
+mv db-migration.exe ${binary_path}/
+cp db-migration.exe.vmoptions ${binary_path}/
 
 cd $p
 #copy example configruation files
@@ -47,6 +47,6 @@ cd $dist_dir
 #remove subversion files
 find . -name '.svn'|xargs rm -rf 
 cd ..
-tar cfvz mq-`date +%Y.%m.%d`.tar.gz mq
+tar cfvz db-migration-`date +%Y.%m.%d`.tar.gz db-migration
 cd $p
 
