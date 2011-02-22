@@ -276,6 +276,7 @@ public class DatabaseMigrationUI extends JPanel implements ActionListener {
                 }
                 JOptionPane.showMessageDialog(DatabaseMigrationUI.this,
                         sb.toString(), "数据库升级脚本", JOptionPane.ERROR_MESSAGE);
+                upgradeBtn.setEnabled(true);
             }
         });
     }
