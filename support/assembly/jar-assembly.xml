@@ -8,9 +8,11 @@
         <dependencySet>
             <unpack>true</unpack>
             <scope>runtime</scope>
+            <!--
             <excludes>
                 <exclude>junit:junit</exclude>
             </excludes>
+            -->
         </dependencySet>
     </dependencySets>
     <!--

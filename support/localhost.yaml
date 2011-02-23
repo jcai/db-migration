@@ -1,5 +1,0 @@
-adapter:  jdbcmysql
-database: analytics
-username: root
-password:
-encoding: utf8
