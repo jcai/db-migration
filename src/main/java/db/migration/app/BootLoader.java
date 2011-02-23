@@ -1,9 +1,3 @@
-/*		
- * Copyright 2010 The EGF Co,. Ltd. 
- * site: http://www.egfit.com
- * file: $Id$
- * created at:2010-7-5
- */
 package db.migration.app;
 
 import db.migration.app.console.ConsoleMigration;
