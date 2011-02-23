@@ -305,7 +305,7 @@ public class DatabaseMigrationUI extends JPanel implements ActionListener {
      */
     private static void createAndShowGUI() {
         // Create and set up the window.
-        JFrame frame = new JFrame("数据库升级工具("+ConsoleMigration.getVersion()+")  -- Powerd By You!");
+        JFrame frame = new JFrame("数据库升级工具("+ConsoleMigration.getVersion()+")  -- Powered By You!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //
         // Read the image that will be used as the application icon. Using "/"
