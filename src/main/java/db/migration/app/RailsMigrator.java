@@ -17,6 +17,9 @@ import java.util.Arrays;
 public class RailsMigrator {
    private static final int BUFFER_SIZE = 4096;
 
+    public static void main(final String[] args) throws Exception {
+        migrate("support/doc/examples/localhost.yaml","support/doc/examples/migrate");
+    }
     public static String migrate(String config,String scriptDir) throws IOException {
         // 装载database-migrator ruby文件
         String script = FileCopyUtils.copyToString(

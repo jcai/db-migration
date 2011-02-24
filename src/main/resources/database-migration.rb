@@ -9,8 +9,7 @@ require 'active_record/connection_adapters/jdbc_adapter'
 require 'active_record/connection_adapters/jdbcmysql_adapter'
 require "active_record"
 require 'yaml'    
-    
-
+require 'logger'
 
 class DBMigrator
     def migrate host,db,username,password,migrate_dir
